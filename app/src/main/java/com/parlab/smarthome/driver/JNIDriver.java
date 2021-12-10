@@ -1,5 +1,6 @@
 package com.parlab.smarthome.driver;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 
 public class JNIDriver implements JNIListener {
@@ -18,6 +19,8 @@ public class JNIDriver implements JNIListener {
     private native static int openDriver(String path);
 
     private native static void closeDriver();
+
+    private native static Bitmap mirrorGPU(Bitmap bitmap);
 
     private native char readDriver();
 
@@ -63,6 +66,10 @@ public class JNIDriver implements JNIListener {
 
     public char read() {
         return readDriver();
+    }
+
+    public Bitmap mirror(Bitmap bitmap) {
+        return mirrorGPU(bitmap);
     }
 
     private class TranseThread extends Thread {

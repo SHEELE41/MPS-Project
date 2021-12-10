@@ -94,7 +94,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
         mDriver.setListener(this);
 
         if (mDriver.open("/dev/sm9s5422_interrupt") < 0) {
-            Toast.makeText(this, "Driver Open Failed", Toast.LENGTH_SHORT).show();
+            LOGGER.d("Driver Open Failed");
         }
     }
 
@@ -107,7 +107,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
     @Override
     public void onResume() {
         if (mDriver.open("/dev/sm9s5422_interrupt") < 0) {
-            Toast.makeText(this, "Driver Open Failed", Toast.LENGTH_SHORT).show();
+            LOGGER.d("Driver Open Failed");
         }
         super.onResume();
     }
@@ -383,14 +383,16 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
             Bitmap crop = null;
 
             if (add) {
-                Matrix cropMatrix = new Matrix();
-                cropMatrix.postScale(-1, 1);
+//                Matrix cropMatrix = new Matrix();
+//                cropMatrix.postScale(-1, 1);
                 crop = Bitmap.createBitmap(portraitBmp,
                         (int) faceBB.left,
                         (int) faceBB.top,
                         (int) faceBB.width(),
-                        (int) faceBB.height(),
-                        cropMatrix, false);
+                        (int) faceBB.height());
+                        // cropMatrix, false);
+                // OpenCL
+                crop = mDriver.mirror(crop);
             }
 
             final long startTime = SystemClock.uptimeMillis();
