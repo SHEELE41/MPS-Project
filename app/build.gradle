@@ -5,16 +5,22 @@ android {
     compileSdkVersion 28
     buildToolsVersion '28.0.3'
     defaultConfig {
-        applicationId "org.tensorflow.lite.examples.facerecognition"
+        applicationId "com.parlab.smarthome"
         minSdkVersion 19
         targetSdkVersion 19
         versionCode 1
         versionName "1.0"
+
+        externalNativeBuild {
+            cmake {
+                cppFlags ''
+            }
+        }
     }
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     aaptOptions {
@@ -24,6 +30,12 @@ android {
         sourceCompatibility = '1.8'
         targetCompatibility = '1.8'
     }
+    externalNativeBuild {
+        cmake {
+            path file('src/main/cpp/CMakeLists.txt')
+            version '3.10.2'
+        }
+    }
     lintOptions {
         abortOnError false
     }
@@ -32,12 +44,6 @@ android {
 // import DownloadModels task
 project.ext.ASSET_DIR = projectDir.toString() + '/src/main/assets'
 project.ext.TMP_DIR   = project.buildDir.toString() + '/downloads'
-
-// Download default models; if you wish to use your own models then
-// place them in the "assets" directory and comment out this line.
-//apply from: "download_model.gradle"
-
-//apply from:'download_model.gradle'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar','*.aar'])
